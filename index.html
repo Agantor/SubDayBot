@@ -1,0 +1,126 @@
+<!DOCTYPE html>
+<html lang="ru">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>SubDay Bot</title>
+    <link rel="stylesheet" href="static/styles.css">
+    <link rel="stylesheet" href="https://stackpath.bootstrapcdn.com/bootstrap/4.5.2/css/bootstrap.min.css"
+        integrity="sha384-JcKb8q3iqJ61gNV9KGb8thSsNjpSL0n8PARn9HuZOnIxN0hoP+VmmDGMN5t9UJ0Z" crossorigin="anonymous">
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/jquery/3.5.1/jquery.min.js"
+        integrity="sha512-bLT0Qm9VnAYZDflyKcBaQ2gg0hSYNQrJ8RilYldYQ1FxQYoCLtUjuuRuZo+fjqhx/qtq/1itJ0C2ejDxltZVFg=="
+        crossorigin="anonymous"></script>
+    <script src="https://stackpath.bootstrapcdn.com/bootstrap/4.5.2/js/bootstrap.min.js"
+        integrity="sha384-B4gt1jrGC7Jh4AgTPSdUtOBvfO8shuf57BaghqFfPlYxofvL8/KUEfYiJOMMV+rV"
+        crossorigin="anonymous"></script>
+
+    <script src="static/tmi.js"></script>
+    <script type="module" src="static/main.js"></script>
+</head>
+
+<body>
+
+
+    <div class="container text-white">
+        <div class="text-center">
+            <h1 class="text-primary">Config</h1>
+
+
+            <div class="row">
+                <div class="text-left my-3 col-6">
+                    <h4>Принимать заказы от:</h3>
+                        <div class="card border-white">
+                            <div class="card-body text-uppercase">
+
+                                <div class="custom-control custom-checkbox text-left  pl-4">
+                                    <input type="checkbox" class="custom-control-input" id="subCheckBox">
+                                    <label class="custom-control-label" for="subCheckBox">Сабов</label>
+                                </div>
+
+
+                                <div class="custom-control custom-checkbox text-left  pl-4">
+                                    <input type="checkbox" class="custom-control-input" id="modCheckBox">
+                                    <label class="custom-control-label" for="modCheckBox">Модеров</label>
+                                </div>
+
+
+                                <div class="custom-control custom-checkbox text-left  pl-4">
+                                    <input type="checkbox" class="custom-control-input" id="vipCheckBox">
+                                    <label class="custom-control-label" for="vipCheckBox">Випов</label>
+                                </div>
+
+                                <div class="custom-control custom-checkbox text-left  pl-4">
+                                    <input type="checkbox" class="custom-control-input" id="allCheckBox">
+                                    <label class="custom-control-label" for="allCheckBox">Абсолютно всех</label>
+                                </div>
+
+                            </div>
+                        </div>
+                </div>
+
+
+                <div class="col-6 my-3">
+                    <div class="input-group mb-3 mt-5">
+                        <div class="input-group-prepend">
+                            <span class="input-group-text text-warning">Назваение команды</span>
+                        </div>
+                        <input type="text" class="form-control" id="command" placeholder="Название команды"
+                            value='subday' aria-label="название" aria-describedby="basic-addon1">
+                    </div>
+
+                    <div class="input-group mb-3 mt-5">
+                        <div class="input-group-prepend">
+                            <span class="input-group-text text-warning">Префикс для команды</span>
+                        </div>
+                        <input type="text" class="form-control" id="prefix" placeholder="Префикс " value='!'
+                            aria-label="название" aria-describedby="basic-addon1">
+                    </div>
+                </div>
+
+            </div>
+
+
+            <div class="row">
+                <div class="mx-auto col-10 row row justify-content-center">
+                    <div class="col-6">
+                        <div class="input-group">
+                            <input type="text" class="form-control" id="channel" placeholder="Channel name"
+                                aria-label="Channel name" aria-describedby="button-addon2">
+                            <div class="input-group-append">
+                                <button class="btn btn-outline-primary " type="button" id="connect">Подключиться к
+                                    каналу</button>
+                            </div>
+
+                        </div>
+                    </div>
+                    <span class="col-1" id='connect-status'>X</span>
+                </div>
+
+            </div>
+
+            <div class="pt-4">
+                <button class="btn btn-outline-warning" type="button" id="button-addon2">Экспортировать список в
+                    .txt</button>
+            </div>
+        </div>
+        <table class="table mt-2 text-white">
+            <thead>
+                <tr class="row">
+                    <th class="col col-1">#</th>
+                    <th class="col col-4">Username</th>
+                    <th class="col col-4">Game</th>
+                    <th class="col col-3">Badges</th>
+                </tr>
+            </thead>
+            <tbody id="messagesList">
+
+            </tbody>
+        </table>
+    </div>
+
+
+
+</body>
+
+</html>

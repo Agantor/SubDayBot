@@ -1,0 +1,32 @@
+*{
+    background-color: #181a1b !important;
+    /* color: green; */
+}
+
+.badge-image {
+    padding: 5px;
+}
+
+.btn-outline-warning{
+    font-size: 1.2rem !important;
+    font-weight: bold !important;
+    /* background-color: #e0a800 !important; */
+}
+
+.btn-outline-warning:hover{
+    color: white !important;
+    background-color: #e0a800 !important;
+}
+
+input{
+    color: white !important;
+}
+
+#connect-status{
+    color: red;
+    vertical-align: middle;
+    line-height: 34px;
+    font-size: 2rem;
+    font-weight: bold;
+    padding-left: 0;
+}
