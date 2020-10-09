@@ -21,9 +21,10 @@ span {
     border-color: rgb(148, 26, 37) !important;
 }
 
-.btn-outline-danger:hover {
+.btn-outline-danger:hover,
+.btn-outline-warning:hover,
+.btn-outline-primary:hover  {
     color: white !important;
-    /* border-color: rgb(148, 26, 37) !important; */
 }
 .btn-outline-warning {
     color: rgb(255, 199, 30) !important;
@@ -61,4 +62,8 @@ hr {
     margin-top: 3rem !important;
     border: 0 !important;
     border-top: 1px solid rgba(255,255,255,1) !important;
+}
+
+.modal-content{
+    background-color: #151718 !important;
 }
