@@ -90,7 +90,8 @@ function processMessage(channel, userstate, message, self) {
         isBroadcaster: userstate.badges.broadcaster == '1',
         isMod: userstate.mod,
         isVip: userstate.badges.vip != null,
-        msgID: userstate.id
+        msgID: userstate.id,
+        userID: userstate['user-id']
     }
 
     if (
@@ -110,11 +111,34 @@ function addToList(user, msg) {
 
     if(config.messages.some(m => m.id == user.msgID)) return;
 
+   
     let newMsg = {
         id: user.msgID,
         message: msg,
         badges: [],
-        username: user.username
+        username: user.username,
+        userID: user.userID,
+        msgID: user.msgID
+    }
+
+    if(config.messages.some(m => m.userID == user.userID))  {
+        let oldMsg = config.messages.find(m => m.userID == user.userID);
+        if(oldMsg){
+            oldMsg.message = msg
+            oldMsg.username = user.username;
+
+            if (user.isSub) oldMsg.badges.push('sub')
+            if (user.isBroadcaster) oldMsg.badges.push('broadcaster')
+            if (user.isMod) oldMsg.badges.push('mod')
+            if (user.isVip) oldMsg.badges.push('vip')
+
+            console.log(oldMsg);
+            localStorage.setItem('subDay_' + 'messages', JSON.stringify(config.messages));
+
+            loadListToTable();
+            return;
+            
+        }
     }
 
     if (user.isSub) newMsg.badges.push('sub')
@@ -146,15 +170,15 @@ function addToList(user, msg) {
     document.getElementById("messagesList").appendChild(newNode);
 
     // fs.appendFileSync('../list.txt', combinedMessage);
-    allMessages = localStorage.getItem('subDay_' + 'messages')
-    let msgArray = [];
-    if (allMessages)
-        msgArray = JSON.parse(allMessages);
+    // allMessages = localStorage.getItem('subDay_' + 'messages')
+    // let msgArray = [];
+    // if (allMessages)
+    //     msgArray = JSON.parse(allMessages);
 
-    msgArray.push(newMsg)
+    // msgArray.push(newMsg)
     config.messages.push(newMsg)
     console.log("Setting Item")
-    localStorage.setItem('subDay_' + 'messages', JSON.stringify(msgArray));
+    localStorage.setItem('subDay_' + 'messages', JSON.stringify(config.messages));
 
 
 }
