@@ -14,9 +14,13 @@
     <script src="https://stackpath.bootstrapcdn.com/bootstrap/4.5.2/js/bootstrap.min.js"
         integrity="sha384-B4gt1jrGC7Jh4AgTPSdUtOBvfO8shuf57BaghqFfPlYxofvL8/KUEfYiJOMMV+rV"
         crossorigin="anonymous"></script>
-
+        <link rel="stylesheet" href="https://pro.fontawesome.com/releases/v5.10.0/css/all.css" integrity="sha384-AYmEC3Yw5cVb3ZcuHtOA93w35dYTsvhLPVnYs9eStHfGJvOvKxVfELGroGkvsg+p" crossorigin="anonymous"/>
     <script src="static/tmi.js"></script>
-    <script type="module" src="static/main.js"></script>
+
+    <script  type="text/javascript" src="static/FileSaver.js"></script>
+    <script  type="text/javascript" src="static/main.js"></script>
+    <script  type="text/javascript" src="static/xlsx.core.min.js"></script>
+    
 </head>
 
 <body>
@@ -24,13 +28,14 @@
 
     <div class="container text-white">
         <div class="text-center">
-            <h1 class="text-primary">Config</h1>
+            <h1 class=" pt-5"><a class="text-success" href="https://www.twitch.tv/fyiden">Fyiden</a>  - SubDay bot (🍌)</h1>
 
 
+            <h2 class="text-center pt-5">Параметры:</h2>
             <div class="row">
                 <div class="text-left my-3 col-6">
                     <h4>Принимать заказы от:</h3>
-                        <div class="card border-white">
+                        <div class="card ">
                             <div class="card-body text-uppercase">
 
                                 <div class="custom-control custom-checkbox text-left  pl-4">
@@ -63,7 +68,7 @@
                 <div class="col-6 my-3">
                     <div class="input-group mb-3 mt-5">
                         <div class="input-group-prepend">
-                            <span class="input-group-text text-warning">Назваение команды</span>
+                            <span class="input-group-text text-info">Назваение команды</span>
                         </div>
                         <input type="text" class="form-control" id="command" placeholder="Название команды"
                             value='subday' aria-label="название" aria-describedby="basic-addon1">
@@ -71,7 +76,7 @@
 
                     <div class="input-group mb-3 mt-5">
                         <div class="input-group-prepend">
-                            <span class="input-group-text text-warning">Префикс для команды</span>
+                            <span class="input-group-text text-info">Префикс для команды</span>
                         </div>
                         <input type="text" class="form-control" id="prefix" placeholder="Префикс " value='!'
                             aria-label="название" aria-describedby="basic-addon1">
@@ -81,45 +86,63 @@
             </div>
 
 
-            <div class="row">
+            <div class="row pt-2">
                 <div class="mx-auto col-10 row row justify-content-center">
                     <div class="col-6">
                         <div class="input-group">
                             <input type="text" class="form-control" id="channel" placeholder="Channel name"
                                 aria-label="Channel name" aria-describedby="button-addon2">
+                                
                             <div class="input-group-append">
                                 <button class="btn btn-outline-primary " type="button" id="connect">Подключиться к
                                     каналу</button>
                             </div>
+                            
 
                         </div>
+                        <div class="connect-invalid-feedback d-block invalid-feedback">
+                            Введите правильное название канала.
+                          </div>
                     </div>
-                    <span class="col-1" id='connect-status'>X</span>
+                    <span class="col-1" id='connect-status'><i class="fas fa-times text-danger"></i></span>
                 </div>
 
             </div>
 
-            <div class="pt-4">
-                <button class="btn btn-outline-warning" type="button" id="button-addon2">Экспортировать список в
+
+
+            <!-- <hr> -->
+            <h2 class="text-center pt-5">Таблица:</h2>
+            <div class="text-right">
+                <button class="btn btn-outline-warning" type="button" id="button-addon2" onclick="saveTxtFile()">Экспортировать список в
                     .txt</button>
+                    <button class="btn btn-outline-warning" type="button" id="button-addon2" onclick="saveExcelFile()">Экспортировать список в
+                        .xlsx</button>
             </div>
         </div>
         <table class="table mt-2 text-white">
             <thead>
                 <tr class="row">
                     <th class="col col-1">#</th>
-                    <th class="col col-4">Username</th>
-                    <th class="col col-4">Game</th>
-                    <th class="col col-3">Badges</th>
+                    <th class="col col-3">Ник пользователя</th>
+                    <th class="col col-4">Игра</th>
+                    <th class="col col-3">Бейджи</th>
+                    <th class="col col-1"></th>
                 </tr>
             </thead>
             <tbody id="messagesList">
-
+                    <!-- <tr class="row">
+                        <td class="col-1">1</td>
+                        <td class="col-3">Test</td>
+                        <td class="col-4">Test</td>
+                        <td class="col-3">Test</td>
+                        <td class="col-1">
+                            <button class="btn btn-outline-danger" type="button" onclick="removeMessage('asddas')"><i class="far fa-trash-alt"></i></button>
+                        </td>
+                    </tr> -->
             </tbody>
         </table>
     </div>
-
-
 
 </body>
 
