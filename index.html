@@ -7,9 +7,10 @@
     <meta property="og:title" content="SubDay Bot by Fyiden" />
     <meta property="og:type" content="website" />
     <meta property="og:description"
-          content="Simple Twitch Chat bot for SubDay event that takes requests from the chat and saves them in a convenient format (table, .txt, .xlsx)" />
+        content="Simple Twitch Chat bot for SubDay event that takes requests from the chat and saves them in a convenient format (table, .txt, .xlsx)" />
     <meta property="og:image" content="./images/uwu_purple112.png" />
-    <meta property="og:image:secure_url" content="https://static-cdn.jtvnw.net/emoticons/v2/303901608/default/dark/2.0" />
+    <meta property="og:image:secure_url"
+        content="https://static-cdn.jtvnw.net/emoticons/v2/303901608/default/dark/2.0" />
     <meta property="og:image:type" content="image/png" />
     <meta property="og:image:width" content="540" />
     <meta property="og:image:height" content="540" />
@@ -26,22 +27,23 @@
     <script src="https://stackpath.bootstrapcdn.com/bootstrap/4.5.2/js/bootstrap.min.js"
         integrity="sha384-B4gt1jrGC7Jh4AgTPSdUtOBvfO8shuf57BaghqFfPlYxofvL8/KUEfYiJOMMV+rV"
         crossorigin="anonymous"></script>
-        <link rel="stylesheet" href="https://pro.fontawesome.com/releases/v5.10.0/css/all.css" integrity="sha384-AYmEC3Yw5cVb3ZcuHtOA93w35dYTsvhLPVnYs9eStHfGJvOvKxVfELGroGkvsg+p" crossorigin="anonymous"/>
-    
-        <script async src="https://www.googletagmanager.com/gtag/js?id=UA-144022684-1"></script>
-        <script>
-            window.dataLayer = window.dataLayer || [];
-            function gtag(){dataLayer.push(arguments);}
-            gtag('js', new Date());
-    
-            gtag('config', 'UA-144022684-1');
-        </script>
-    
+    <link rel="stylesheet" href="https://pro.fontawesome.com/releases/v5.10.0/css/all.css"
+        integrity="sha384-AYmEC3Yw5cVb3ZcuHtOA93w35dYTsvhLPVnYs9eStHfGJvOvKxVfELGroGkvsg+p" crossorigin="anonymous" />
 
-    <script  type="text/javascript" src="./static/tmi.js"></script>
-    <script  type="text/javascript" src="./static/FileSaver.js"></script>
-    <script  type="text/javascript" src="./static/xlsx.core.min.js"></script>
-    <script  type="text/javascript" src="./static/main.js"></script>
+    <script async src="https://www.googletagmanager.com/gtag/js?id=UA-144022684-1"></script>
+    <script>
+        window.dataLayer = window.dataLayer || [];
+        function gtag() { dataLayer.push(arguments); }
+        gtag('js', new Date());
+
+        gtag('config', 'UA-144022684-1');
+    </script>
+
+
+    <script type="text/javascript" src="./static/tmi.js"></script>
+    <script type="text/javascript" src="./static/FileSaver.js"></script>
+    <script type="text/javascript" src="./static/xlsx.core.min.js"></script>
+    <script type="text/javascript" src="./static/main.js"></script>
 </head>
 
 <body>
@@ -49,15 +51,16 @@
 
     <div class="container text-white">
         <div class="text-center">
-            <h1 class=" pt-5"><a class="text-success" href="https://www.twitch.tv/fyiden">Fyiden</a>  - SubDay bot (🍌)</h1>
+            <h1 class=" pt-5"><a class="text-success" href="https://www.twitch.tv/fyiden">Fyiden</a> - SubDay bot (🍌)
+            </h1>
 
 
             <h2 class="text-center pt-5">Параметры:</h2>
             <div class="row">
                 <div class="text-left my-3 col-6">
                     <h4>Принимать заказы от:</h3>
-                        <div class="card ">
-                            <div class="card-body text-uppercase">
+                        <div class="card bg-dark">
+                            <div class="card-body text-uppercase bg-dark">
 
                                 <div class="custom-control custom-checkbox text-left  pl-4">
                                     <input type="checkbox" class="custom-control-input" id="subCheckBox">
@@ -113,17 +116,17 @@
                         <div class="input-group">
                             <input type="text" class="form-control" id="channel" placeholder="Channel name"
                                 aria-label="Channel name" aria-describedby="button-addon2">
-                                
+
                             <div class="input-group-append">
                                 <button class="btn btn-outline-primary " type="button" id="connect">Подключиться к
                                     каналу</button>
                             </div>
-                            
+
 
                         </div>
                         <div class="connect-invalid-feedback d-block invalid-feedback">
                             Введите правильное название канала.
-                          </div>
+                        </div>
                     </div>
                     <span class="col-1" id='connect-status'><i class="fas fa-times text-danger"></i></span>
                 </div>
@@ -134,11 +137,43 @@
 
             <!-- <hr> -->
             <h2 class="text-center pt-5">Таблица:</h2>
-            <div class="text-right">
-                <button class="btn btn-outline-warning" type="button" id="button-addon2" onclick="saveTxtFile()">Экспортировать список в
-                    .txt</button>
-                    <button class="btn btn-outline-warning" type="button" id="button-addon2" onclick="saveExcelFile()">Экспортировать список в
+            <div class="row">
+                <div class="text-left col-3">
+                    <button class="btn btn-outline-danger" type="button" id="button-addon2"
+                          data-toggle="modal"
+                        data-target=".bd-example-modal-sm">Удалить всё</button>
+                    <!-- <button type="button" class="btn btn-primary" data-toggle="modal"
+                        data-target=".bd-example-modal-sm">Small modal</button> -->
+
+                    <div class="modal fade bd-example-modal-sm" tabindex="-1" role="dialog"
+                        aria-labelledby="mySmallModalLabel" aria-hidden="true">
+                        <div class="modal-dialog">
+                            <div class="modal-content bg-dark">
+                                <!-- <div class="modal-header  bg-dark">
+                                  <h5 class="modal-title">Удалить все запросы?</h5>
+                                  <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+                                    <span class=" bg-dark" aria-hidden="true">&times;</span>
+                                  </button>
+                                </div> -->
+                                <div class="modal-body">
+                                  <h2>Удалить все запросы?</h2>
+                                </div>
+                                <div class="modal-footer">
+                                  <button type="button" class="btn btn-outline-danger px-4" onclick="clearMessages()"  data-dismiss="modal">Да</button>
+                                  <button type="button" class="btn btn-secondary px-4" data-dismiss="modal">Нет</button>
+                                </div>
+                              </div>
+                        </div>
+                    </div>
+                </div>
+                <div class="text-right col-9">
+                    <button class="btn btn-outline-warning" type="button" id="button-addon2"
+                        onclick="saveTxtFile()">Экспортировать список в
+                        .txt</button>
+                    <button class="btn btn-outline-warning" type="button" id="button-addon2"
+                        onclick="saveExcelFile()">Экспортировать список в
                         .xlsx</button>
+                </div>
             </div>
         </div>
         <table class="table mt-2 text-white">
@@ -152,7 +187,7 @@
                 </tr>
             </thead>
             <tbody id="messagesList">
-                    <!-- <tr class="row">
+                <!-- <tr class="row">
                         <td class="col-1">1</td>
                         <td class="col-3">Test</td>
                         <td class="col-4">Test</td>

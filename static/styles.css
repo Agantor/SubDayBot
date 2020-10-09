@@ -1,18 +1,44 @@
 /* *{
     background-color: #181a1b;
 } */
-div {
+/* div {
     background-color: #181a1b;
-}
+} */
 
 html,
 body,
 input,
 span {
-    background-color: #181a1b !important;
+    background-color: rgb(19, 21, 22) !important
     /* color: green; */
 }
+*{
+    border-color: rgb(60, 65, 68) !important;
+}
 
+.btn-outline-danger {
+    color: rgb(223, 70, 85) !important;
+    border-color: rgb(148, 26, 37) !important;
+}
+
+.btn-outline-danger:hover {
+    color: white !important;
+    /* border-color: rgb(148, 26, 37) !important; */
+}
+.btn-outline-warning {
+    color: rgb(255, 199, 30) !important;
+    border-color: rgb(176, 132, 0) !important;
+}
+
+.btn-outline-primary {
+    color: rgb(51, 162, 255) !important;
+    border-color: rgb(0, 86, 179) !important;
+}
+
+.custom-control-label::before {
+    background-color: rgb(24, 26, 27) !important;
+    border-color: rgb(69, 75, 78) !important;
+}
 .badge-image {
     padding: 5px;
 }

@@ -442,3 +442,10 @@ function saveExcelFile() {
 }
 
 
+function clearMessages(){
+    config.messages = []
+    localStorage.removeItem('subDay_' + 'messages')
+    loadListToTable()
+}
+
+
