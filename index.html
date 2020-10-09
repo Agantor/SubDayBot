@@ -4,8 +4,20 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <meta property="og:title" content="SubDay Bot by Fyiden" />
+    <meta property="og:type" content="website" />
+    <meta property="og:description"
+          content="Simple Twitch Chat bot for SubDay event that takes requests from the chat and saves them in a convenient format (table, .txt, .xlsx)" />
+    <meta property="og:image" content="./images/uwu_purple112.png" />
+    <meta property="og:image:secure_url" content="https://static-cdn.jtvnw.net/emoticons/v2/303901608/default/dark/2.0" />
+    <meta property="og:image:type" content="image/png" />
+    <meta property="og:image:width" content="540" />
+    <meta property="og:image:height" content="540" />
+    <meta property="og:image:alt" content="SubDay UwU" />
+
     <title>SubDay Bot</title>
-    <link rel="stylesheet" href="static/styles.css">
+    <link rel="icon" href="./images/uwu_purple112.png">
+    <link rel="stylesheet" href="./static/styles.css">
     <link rel="stylesheet" href="https://stackpath.bootstrapcdn.com/bootstrap/4.5.2/css/bootstrap.min.css"
         integrity="sha384-JcKb8q3iqJ61gNV9KGb8thSsNjpSL0n8PARn9HuZOnIxN0hoP+VmmDGMN5t9UJ0Z" crossorigin="anonymous">
     <script src="https://cdnjs.cloudflare.com/ajax/libs/jquery/3.5.1/jquery.min.js"
@@ -15,12 +27,21 @@
         integrity="sha384-B4gt1jrGC7Jh4AgTPSdUtOBvfO8shuf57BaghqFfPlYxofvL8/KUEfYiJOMMV+rV"
         crossorigin="anonymous"></script>
         <link rel="stylesheet" href="https://pro.fontawesome.com/releases/v5.10.0/css/all.css" integrity="sha384-AYmEC3Yw5cVb3ZcuHtOA93w35dYTsvhLPVnYs9eStHfGJvOvKxVfELGroGkvsg+p" crossorigin="anonymous"/>
-    <script src="static/tmi.js"></script>
-
-    <script  type="text/javascript" src="static/FileSaver.js"></script>
-    <script  type="text/javascript" src="static/main.js"></script>
-    <script  type="text/javascript" src="static/xlsx.core.min.js"></script>
     
+        <script async src="https://www.googletagmanager.com/gtag/js?id=UA-144022684-1"></script>
+        <script>
+            window.dataLayer = window.dataLayer || [];
+            function gtag(){dataLayer.push(arguments);}
+            gtag('js', new Date());
+    
+            gtag('config', 'UA-144022684-1');
+        </script>
+    
+
+    <script  type="text/javascript" src="./static/tmi.js"></script>
+    <script  type="text/javascript" src="./static/FileSaver.js"></script>
+    <script  type="text/javascript" src="./static/xlsx.core.min.js"></script>
+    <script  type="text/javascript" src="./static/main.js"></script>
 </head>
 
 <body>
@@ -68,7 +89,7 @@
                 <div class="col-6 my-3">
                     <div class="input-group mb-3 mt-5">
                         <div class="input-group-prepend">
-                            <span class="input-group-text text-info">Назваение команды</span>
+                            <span class="input-group-text text-info">Название команды</span>
                         </div>
                         <input type="text" class="form-control" id="command" placeholder="Название команды"
                             value='subday' aria-label="название" aria-describedby="basic-addon1">
@@ -143,7 +164,6 @@
             </tbody>
         </table>
     </div>
-
 </body>
 
 </html>

@@ -30,36 +30,50 @@ let options = {
 let client = new tmi.client(options);
 
 function connectToTwitch() {
+
+    disconnectFromTwitch();
+    
     config.connected = false;
 
+    if(client == null){
+        client = new tmi.client(options);
+        console.log("Creating new client")
+    }
     // Connect the client to the server..
     client.connect().then(
         (msg) => {
             console.log(msg)
 
             client.join(config.channel).then((msg) => { console.log(`Connected to Twitch [${config.channel}]`); updateConnectStatus(true) })
-                .catch(msg => { console.error(msg); updateConnectStatus(false) })
-        }).catch(msg => { console.error(msg); updateConnectStatus(false) });
+                .catch(msg => { console.error(msg); updateConnectStatus(false) });
 
-    // client.on("connected", () => { console.log(`Connected to Twitch [${config.channel}]`);})
+                // client.on("connected", () => { console.log(`Connected to Twitch [${config.channel}]`);})
     client.on("disconnected", () => { console.log(`Disconnected from Twitch`); updateConnectStatus(false) });
 
-    client.on("message", (channel, userstate, message, self) => processMessage(channel, userstate, message, self))
+    client.on("message", (channel, userstate, message, self) => {processMessage(channel, userstate, message, self)})
+        }).catch(msg => { console.error(msg); updateConnectStatus(false) });
+
+    
 }
 
 function disconnectFromTwitch() {
-    if (config.connected)
-        client.disconnect().then(
-            () => {
-                updateConnectStatus(false);
-                console.log('Disconnected');
-            })
+    // client.part(config.channel);
+    // if (config.connected)
+    if(client == null) return;
+    client.disconnect().then(
+        () => {
+            updateConnectStatus(false);
+            console.log('Disconnected');
+        })
+    client = null;
+        
 }
 
 
 function processMessage(channel, userstate, message, self) {
 
     console.log(config)
+    console.log(userstate)
     // console.log(userstate);
     let words = message.split(' ');
     if (!message.startsWith(config.prefix)
@@ -76,9 +90,15 @@ function processMessage(channel, userstate, message, self) {
         isBroadcaster: userstate.badges.broadcaster == '1',
         isMod: userstate.mod,
         isVip: userstate.badges.vip != null,
+        msgID: userstate.id
     }
 
-    if ((config.sub && user.isSub) || (config.mod && user.isMod) || (config.vip && user.isVip) || user.isBroadcaster)
+    if (
+        ((config.sub == true || config.sub == 'true') && user.isSub) 
+        || ((config.mod == true || config.mod == 'true') && user.isMod) 
+        || ((config.vip == true || config.vip == 'true') && user.isVip) 
+        || user.isBroadcaster || (config.all == true || config.all == 'true'))
+        
         addToList(user, words.slice(1).join(" "))
 
 }
@@ -88,8 +108,10 @@ function addToList(user, msg) {
 
     let images = ''
 
+    if(config.messages.some(m => m.id == user.msgID)) return;
+
     let newMsg = {
-        id: getRandomID(),
+        id: user.msgID,
         message: msg,
         badges: [],
         username: user.username
@@ -101,10 +123,10 @@ function addToList(user, msg) {
     if (user.isVip) newMsg.badges.push('vip')
 
 
-    if (user.isSub) images += `<img src='../images/sub.png' class='badge-image'/>`
-    if (user.isBroadcaster) images += `<img src='../images/broadcaster.png' class='badge-image'/>`
-    if (user.isMod) images += `<img src='../images/mod.png' class='badge-image'/>`
-    if (user.isVip) images += `<img src='../images/vip.png' class='badge-image'/>`
+    if (user.isSub) images += `<img src='./images/sub.png' class='badge-image'/>`
+    if (user.isBroadcaster) images += `<img src='./images/broadcaster.png' class='badge-image'/>`
+    if (user.isMod) images += `<img src='./images/mod.png' class='badge-image'/>`
+    if (user.isVip) images += `<img src='./images/vip.png' class='badge-image'/>`
 
 
 
@@ -124,7 +146,7 @@ function addToList(user, msg) {
     document.getElementById("messagesList").appendChild(newNode);
 
     // fs.appendFileSync('../list.txt', combinedMessage);
-    allMessages = localStorage.getItem('messages')
+    allMessages = localStorage.getItem('subDay_' + 'messages')
     let msgArray = [];
     if (allMessages)
         msgArray = JSON.parse(allMessages);
@@ -132,14 +154,14 @@ function addToList(user, msg) {
     msgArray.push(newMsg)
     config.messages.push(newMsg)
     console.log("Setting Item")
-    localStorage.setItem('messages', JSON.stringify(msgArray));
+    localStorage.setItem('subDay_' + 'messages', JSON.stringify(msgArray));
 
 
 }
 
 function handleCheckBox(checkBoxID) {
     $(`#${checkBoxID}`).change(function () {
-        localStorage.setItem(checkBoxID, this.checked);
+        localStorage.setItem('subDay_' + checkBoxID, this.checked);
         updateConfig();
     });
 }
@@ -182,7 +204,7 @@ $(document).ready(function () {
             $(this).toggleClass('is-invalid')
         else
             $(this).removeClass('is-invalid')
-        localStorage.setItem('command', this.value);
+        localStorage.setItem('subDay_' + 'command', this.value);
         updateConfig();
     })
 
@@ -191,7 +213,7 @@ $(document).ready(function () {
             $(this).toggleClass('is-invalid')
         else
             $(this).removeClass('is-invalid')
-        localStorage.setItem('prefix', this.value);
+        localStorage.setItem('subDay_' + 'prefix', this.value);
         updateConfig();
     })
 
@@ -208,7 +230,7 @@ $(document).ready(function () {
             $('.connect-invalid-feedback').removeClass('d-block')
         }
 
-        localStorage.setItem('channel', this.value);
+        localStorage.setItem('subDay_' + 'channel', this.value);
         updateConfig();
     })
 
@@ -221,13 +243,13 @@ $(document).ready(function () {
 
 
 function updateConfig() {
-    if (localStorage.getItem('subCheckBox')) config.sub = localStorage.getItem('subCheckBox')
-    if (localStorage.getItem('modCheckBox')) config.mod = localStorage.getItem('modCheckBox')
-    if (localStorage.getItem('vipCheckBox')) config.vip = localStorage.getItem('vipCheckBox')
-    if (localStorage.getItem('allCheckBox')) config.all = localStorage.getItem('allCheckBox')
-    if (localStorage.getItem('command')) config.command = localStorage.getItem('command')
-    if (localStorage.getItem('prefix')) config.prefix = localStorage.getItem('prefix')
-    if (localStorage.getItem('channel')) config.channel = localStorage.getItem('channel')
+    if (localStorage.getItem('subDay_' + 'subCheckBox')) config.sub = localStorage.getItem('subDay_' + 'subCheckBox')
+    if (localStorage.getItem('subDay_' + 'modCheckBox')) config.mod = localStorage.getItem('subDay_' + 'modCheckBox')
+    if (localStorage.getItem('subDay_' + 'vipCheckBox')) config.vip = localStorage.getItem('subDay_' + 'vipCheckBox')
+    if (localStorage.getItem('subDay_' + 'allCheckBox')) config.all = localStorage.getItem('subDay_' + 'allCheckBox')
+    if (localStorage.getItem('subDay_' + 'command')) config.command = localStorage.getItem('subDay_' + 'command')
+    if (localStorage.getItem('subDay_' + 'prefix')) config.prefix = localStorage.getItem('subDay_' + 'prefix')
+    if (localStorage.getItem('subDay_' + 'channel')) config.channel = localStorage.getItem('subDay_' + 'channel')
 }
 
 
@@ -272,7 +294,7 @@ function removeMessage(msgID) {
 
         config.messages.splice(i, 1);
         console.log(config.messages)
-        localStorage.setItem('messages', JSON.stringify(config.messages));
+        localStorage.setItem('subDay_' + 'messages', JSON.stringify(config.messages));
 
         loadListToTable();
     }
@@ -290,9 +312,9 @@ function loadListToTable() {
 
     $("#messagesList").empty();
     config.messages = [];
-    if (!localStorage.getItem('messages')) return;
+    if (!localStorage.getItem('subDay_' + 'messages')) return;
 
-    let commands = JSON.parse(localStorage.getItem('messages'))
+    let commands = JSON.parse(localStorage.getItem('subDay_' + 'messages'))
 
     for (let i = 0; i < commands.length; i++) {
         let msg = commands[i];
@@ -301,10 +323,10 @@ function loadListToTable() {
 
         let images = ''
 
-        if (msg.badges.includes('sub')) images += `<img src='../images/sub.png' class='badge-image'/>`
-        if (msg.badges.includes('broadcaster')) images += `<img src='../images/broadcaster.png' class='badge-image'/>`
-        if (msg.badges.includes('mod')) images += `<img src='../images/mod.png' class='badge-image'/>`
-        if (msg.badges.includes('vip')) images += `<img src='../images/vip.png' class='badge-image'/>`
+        if (msg.badges.includes('sub')) images += `<img src='./images/sub.png' class='badge-image'/>`
+        if (msg.badges.includes('broadcaster')) images += `<img src='./images/broadcaster.png' class='badge-image'/>`
+        if (msg.badges.includes('mod')) images += `<img src='./images/mod.png' class='badge-image'/>`
+        if (msg.badges.includes('vip')) images += `<img src='./images/vip.png' class='badge-image'/>`
 
 
 
@@ -314,7 +336,7 @@ function loadListToTable() {
         newNode.dataset.id = msg.id;
 
         newNode.innerHTML =
-            `<td  class='col-1'>${i}</th>
+            `<td  class='col-1'>${i + 1}</th>
         <td class='col-3'>${msg.username}</td>
         <td class='col-4'>${msg.message}</td>
         <td class='col-3'>${images}</td>
@@ -329,7 +351,7 @@ function loadListToTable() {
 
 
 function saveTxtFile() {
-    let messages = JSON.parse(localStorage.getItem('messages'))
+    let messages = JSON.parse(localStorage.getItem('subDay_' + 'messages'))
 
     const today = new Date();
     
@@ -361,14 +383,14 @@ function saveExcelFile() {
 
     const filename = `subDay_${today.getDate()}_${month[today.getMonth()]}_${today.getFullYear()}.xlsx`;
     let data = [['#', 'Username', 'Game', 'Sub', 'Vip', 'Broadcaster', 'Mod']]
-    let messages = JSON.parse(localStorage.getItem('messages'))
+    let messages = JSON.parse(localStorage.getItem('subDay_' + 'messages'))
 
     if (messages) {
         for (let i = 0; i < messages.length; i++) {
             let m = messages[i];
             let row = []
 
-            row.push(i)
+            row.push(i + 1)
             row.push(m.username)
             row.push(m.message)
 
