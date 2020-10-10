@@ -124,7 +124,7 @@ function addToList(user, msg) {
     if(config.messages.some(m => m.userID == user.userID))  {
         let oldMsg = config.messages.find(m => m.userID == user.userID);
         if(oldMsg){
-            oldMsg.message = msg
+            oldMsg.message = escapeHTML(msg)
             oldMsg.username = user.username;
 
             if (user.isSub) oldMsg.badges.push('sub')
@@ -162,7 +162,7 @@ function addToList(user, msg) {
     newNode.innerHTML =
         `<th  class='col-1'>${config.messages.length + 1}</th>
     <td class='col-3'>${newMsg.username}</td>
-    <td class='col-4'>${newMsg.message}</td>
+    <td class='col-4'>${escapeHTML(newMsg.message)}</td>
     <td class='col-3'>${images}</td>
     <td class="col-1">
     <button class="btn btn-outline-danger" type="button" onclick="removeMessage('${newMsg.id}')"><i class="far fa-trash-alt"></i></button>
@@ -449,3 +449,19 @@ function clearMessages(){
 }
 
 
+const entitiesMap = {
+    '&': '&amp;',
+    '<': '&lt;',
+    '>': '&gt;',
+    '"': '&quot;',
+    "'": '&#39;',
+    '/': '&#x2F;',
+    '`': '&#x60;',
+    '=': '&#x3D;'
+}
+
+function escapeHTML(string){
+    return String(string).replace(/[&<>"'`=\/]/g, function(s){
+        return entitiesMap[s];
+    });
+}
