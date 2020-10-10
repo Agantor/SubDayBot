@@ -362,7 +362,7 @@ function loadListToTable() {
         newNode.innerHTML =
             `<td  class='col-1'>${i + 1}</th>
         <td class='col-3'>${msg.username}</td>
-        <td class='col-4'>${msg.message}</td>
+        <td class='col-4'>${escapeHTML(msg.message)}</td>
         <td class='col-3'>${images}</td>
         <td class="col-1">
     <button class="btn btn-outline-danger" type="button" onclick="removeMessage('${msg.id}')"><i class="far fa-trash-alt"></i></button>
